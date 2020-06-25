@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="article"
+            type="com.example.news.db.model.Article" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_marginEnd="@dimen/base_margin"
+        android:layout_marginRight="@dimen/base_margin">
+
+        <ImageView
+            android:id="@+id/articleImage"
+            android:layout_width="@dimen/size_image_article"
+            android:layout_height="@dimen/size_image_article"
+            android:layout_margin="@dimen/base_margin"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_margin"
+            android:layout_marginLeft="@dimen/base_margin"
+            android:layout_marginBottom="@dimen/article_gutter"
+            android:maxLines="1"
+            android:text="@{article.title}"
+            app:layout_constraintStart_toEndOf="@id/articleImage"
+            app:layout_constraintTop_toTopOf="@id/articleImage" />
+
+        <TextView
+            android:id="@+id/sourceName"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/article_gutter"
+            android:maxLines="1"
+            android:text="@{article.source.name}"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:id="@+id/contentPreview"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="@{article.content}"
+            app:layout_constraintStart_toStartOf="@id/sourceName"
+            app:layout_constraintTop_toBottomOf="@id/sourceName" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
