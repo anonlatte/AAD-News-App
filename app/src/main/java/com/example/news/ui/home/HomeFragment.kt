@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.databinding.FragmentHomeBinding
-import com.example.news.db.model.Article
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -44,7 +42,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun subscribeUI() {
-        viewModel.list.observe(viewLifecycleOwner, Observer<PagedList<Article>> {
+        viewModel.posts.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }

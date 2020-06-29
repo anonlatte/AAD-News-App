@@ -1,25 +1,25 @@
 package com.example.news.ui.home
 
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import com.example.news.api.MainThreadExecutor
-import com.example.news.db.model.ArticleDataSourceFactory
-import com.example.news.repository.NewsRepository
+import com.example.news.db.model.Article
+import com.example.news.repository.Listing
+import com.example.news.repository.MainRepository
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(repository: NewsRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(var repository: MainRepository) : ViewModel() {
 
-    private val dataSource = ArticleDataSourceFactory(repository)
+    var repoResult: Listing<Article> = repository.getTopHeadlines()
 
-    private val config = PagedList.Config.Builder()
-        .setPageSize(20)
-        .setEnablePlaceholders(false)
-        .build()
+    val posts = repoResult.pagedList
+    val networkState = repoResult.networkState
+    val refreshState = repoResult.refreshState
 
-    private val executor = MainThreadExecutor()
+    fun refresh() {
+        repoResult.refresh.invoke()
+    }
 
-    var list = LivePagedListBuilder(dataSource, config)
-        .setFetchExecutor(executor)
-        .build()
+    fun retry() {
+        repoResult.retry.invoke()
+    }
+
 }

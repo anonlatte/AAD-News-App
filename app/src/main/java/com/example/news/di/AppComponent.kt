@@ -3,6 +3,7 @@ package com.example.news.di
 import android.app.Application
 import com.example.news.NewsApp
 import com.example.news.di.module.AppModule
+import com.example.news.di.module.DatabaseModule
 import com.example.news.di.module.MainActivityModule
 import dagger.BindsInstance
 import dagger.Component
@@ -11,7 +12,12 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [AndroidInjectionModule::class, AppModule::class, MainActivityModule::class]
+    modules = [
+        AndroidInjectionModule::class,
+        AppModule::class,
+        MainActivityModule::class,
+        DatabaseModule::class
+    ]
 )
 interface AppComponent {
 

@@ -11,7 +11,7 @@ interface NewsService {
     @Headers("X-Api-Key: ${BuildConfig.ApiKey}")
     @GET("/v2/top-headlines")
     suspend fun getTopHeadlines(
-        @Query("page") page: Int,
-        @QueryMap parameters: Map<String, String>
+        @Query("page") page: Int = 1,
+        @QueryMap parameters: Map<String, String> = mapOf("country" to "us")
     ): NewsResponse
 }

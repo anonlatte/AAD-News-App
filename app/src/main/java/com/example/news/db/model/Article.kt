@@ -1,14 +1,11 @@
 package com.example.news.db.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity
+@Entity(tableName = "articles", indices = [Index(value = ["url"], unique = true)])
 data class Article(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
-    var source: Source,
     var author: String?,
     var title: String?,
     var description: String?,
@@ -18,4 +15,10 @@ data class Article(
     @ColumnInfo(name = "published_at")
     var publishedAt: String?,
     var content: String?
-)
+) {
+    // FIXME cached article doesn't have source
+    @Ignore
+    var source: Source? = null
+
+    var indexInResponse: Int = -1
+}

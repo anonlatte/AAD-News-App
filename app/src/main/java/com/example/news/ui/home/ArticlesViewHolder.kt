@@ -24,7 +24,7 @@ class ArticlesViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         if (article != null) {
             titleTextView.text = article.title
             contentTextView.text = article.content
-            sourceTextView.text = article.source.name
+            sourceTextView.text = article.source?.name
 
             if (article.urlToImage != null) {
                 Glide.with(itemView.context).load(article.urlToImage).into(articleImageView)
