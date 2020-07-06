@@ -8,6 +8,7 @@ import com.example.news.util.PagingRequestHelper
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import java.util.concurrent.Executor
 
 class ArticlesBoundaryCallback(
@@ -30,7 +31,9 @@ class ArticlesBoundaryCallback(
             try {
                 var response: NewsResponse? = null
                 runBlocking {
-                    response = webservice.getTopHeadlines()
+                    response = webservice.getTopHeadlines().apply {
+                        Timber.d("$totalResults")
+                    }
                 }
                 GlobalScope.launch {
                     response?.let { insertItemsIntoDb(it, requestCallback) }
@@ -51,7 +54,9 @@ class ArticlesBoundaryCallback(
                 page++
                 var response: NewsResponse? = null
                 runBlocking {
-                    response = webservice.getTopHeadlines(page)
+                    response = webservice.getTopHeadlines(page).apply {
+                        Timber.d("$totalResults")
+                    }
                 }
                 GlobalScope.launch {
                     response?.let { insertItemsIntoDb(it, requestCallback) }

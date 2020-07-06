@@ -32,7 +32,7 @@ class MainRepository @Inject constructor(
 
     private fun insertResultIntoDb(body: NewsResponse?) {
         GlobalScope.launch {
-            Timber.i("Insert result into db ${body?.status}:${body?.totalResults}")
+            Timber.d("Insert result into db ${body?.status}:${body?.totalResults}")
             body!!.articles.let { articles ->
                 articlesDao.insertMultipleArticles(articles)
             }
@@ -51,7 +51,9 @@ class MainRepository @Inject constructor(
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
         try {
-            val response = newsService.getTopHeadlines()
+            val response = newsService.getTopHeadlines().apply {
+                Timber.d("$totalResults")
+            }
             ioExecutor.execute {
                 GlobalScope.launch {
                     articlesDao.insertMultipleArticles(response.articles)

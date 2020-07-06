@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(var repository: MainRepository) : ViewModel() {
 
-    var repoResult: Listing<Article> = repository.getTopHeadlines()
+    private var repoResult: Listing<Article> = repository.getTopHeadlines()
 
     val posts = repoResult.pagedList
     val networkState = repoResult.networkState

@@ -1,5 +1,6 @@
 package com.example.news.di.module
 
+import com.example.news.BuildConfig
 import com.example.news.api.NewsService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,11 @@ class AppModule {
     @Provides
     fun providesNewsService(): NewsService {
         val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BASIC
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor).build()
         return Retrofit.Builder()
