@@ -16,7 +16,6 @@ class ArticlesViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
 
     private val titleTextView = itemView.findViewById<TextView>(R.id.title)
     private val contentTextView = itemView.findViewById<TextView>(R.id.contentPreview)
-    private val sourceTextView = itemView.findViewById<TextView>(R.id.sourceName)
     private val articleImageView = itemView.findViewById<ImageView>(R.id.articleImage)
     var article: Article? = null
     private val circularProgressDrawable = CircularProgressDrawable(itemView.context).apply {
@@ -30,7 +29,6 @@ class ArticlesViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         article?.run {
             titleTextView.text = title
             contentTextView.text = content
-            sourceTextView.text = source?.name
 
             urlToImage?.let {
                 Glide.with(itemView.context)
