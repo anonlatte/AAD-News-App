@@ -107,6 +107,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 // THIS class is likely to be moved into the library in a future release. Feel free to copy it
 // from this sample.
+@SuppressWarnings("ALL")
 public class PagingRequestHelper {
     @NonNull
     final CopyOnWriteArrayList<Listener> mListeners = new CopyOnWriteArrayList<>();
