@@ -7,11 +7,11 @@ import com.example.news.db.model.Article
 @Dao
 interface ArticlesDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertArticle(article: Article): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMultipleArticles(article: List<Article>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertMultipleArticles(article: List<Article>): List<Long>
 
     @Query("SELECT * FROM articles ORDER BY published_at")
     fun getArticles(): DataSource.Factory<Int, Article>

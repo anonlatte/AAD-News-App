@@ -32,20 +32,20 @@ class MainRepository @Inject constructor(
 
     private fun insertResultIntoDb(body: NewsResponse?) {
         GlobalScope.launch {
-            Timber.d("Insert result into db ${body?.status}:${body?.totalResults}")
+            val totalNewArticles: List<Long>
             body!!.articles.let { articles ->
-                articlesDao.insertMultipleArticles(articles)
+                totalNewArticles = articlesDao.insertMultipleArticles(articles)
             }
+            Timber.d(
+                String.format(
+                    "DB insert status:${body.status}" +
+                            ":(total results:${body.totalResults}" +
+                            ":(new elements:${totalNewArticles.size}))"
+                )
+            )
         }
     }
 
-    /**
-     * When refresh is called, we simply run a fresh network request and when it arrives, clear
-     * the database table and insert all new items in a transaction.
-     * <p>
-     * Since the PagedList already uses a database bound data source, it will automatically be
-     * updated after the database transaction is finished.
-     */
     @MainThread
     private suspend fun refresh(): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
@@ -56,10 +56,17 @@ class MainRepository @Inject constructor(
             }
             ioExecutor.execute {
                 GlobalScope.launch {
-                    articlesDao.insertMultipleArticles(response.articles)
+
+                    val totalNewArticles = articlesDao.insertMultipleArticles(response.articles)
+
+                    Timber.d(
+                        String.format(
+                            "DB insert total results:${response.totalResults}" +
+                                    ":(new elements:${totalNewArticles.size}))"
+                        )
+                    )
                 }
 
-                // since we are in bg thread now, post the result.
                 networkState.postValue(NetworkState.LOADED)
             }
 
@@ -85,8 +92,6 @@ class MainRepository @Inject constructor(
             }
         }
 
-        var livePagedList: LiveData<PagedList<Article>>? = null
-
         val config = PagedList.Config.Builder()
             .setPageSize(20)
             .setEnablePlaceholders(false)
@@ -97,7 +102,7 @@ class MainRepository @Inject constructor(
             articlesDataSource = articlesDao.getArticles()
         }
 
-        livePagedList = LivePagedListBuilder(articlesDataSource!!, config)
+        val livePagedList = LivePagedListBuilder(articlesDataSource!!, config)
             .setBoundaryCallback(boundaryCallback)
             .build()
 
