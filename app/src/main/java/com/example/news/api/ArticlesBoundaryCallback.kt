@@ -20,57 +20,38 @@ class ArticlesBoundaryCallback(
     val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
-    companion object {
-        const val API_MAX_PAGES: Int = 3
-    }
-
     override fun onZeroItemsLoaded() {
         Timber.d("ZeroItemsLoaded")
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { requestCallback ->
-            try {
-                val response = runBlocking {
-                    webservice.getTopHeadlines()
-                }
-                insertItemsIntoDb(response, requestCallback)
-            } catch (throwable: Throwable) {
-                requestCallback.recordFailure(throwable)
-            }
-        }
+        getNewItems(PagingRequestHelper.RequestType.INITIAL, false)
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: Article) {
         Timber.d("ItemAtEndLoaded")
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { requestCallback ->
-            page++
-            if (page < API_MAX_PAGES) {
-                try {
-                    val response = runBlocking {
-                        webservice.getTopHeadlines(page)
-                    }
-                    insertItemsIntoDb(response, requestCallback)
-
-                } catch (throwable: Throwable) {
-                    requestCallback.recordFailure(throwable)
-                }
-            }
-        }
+        getNewItems(PagingRequestHelper.RequestType.AFTER, true)
     }
 
+    override fun onItemAtFrontLoaded(itemAtFront: Article) {}
 
-    override fun onItemAtFrontLoaded(itemAtFront: Article) {
-        Timber.d("ItemAtFrontLoaded")
-        helper.runIfNotRunning(PagingRequestHelper.RequestType.BEFORE) { requestCallback ->
-            try {
-                val response = runBlocking {
-                    webservice.getTopHeadlines()
+    private fun getNewItems(
+        requestType: PagingRequestHelper.RequestType,
+        isNewPageRequired: Boolean
+    ) {
+        helper.runIfNotRunning(requestType) { requestCallback ->
+            runCatching {
+                runBlocking {
+                    if (isNewPageRequired) {
+                        page++
+                        webservice.getTopHeadlines(page)
+                    } else {
+                        webservice.getTopHeadlines()
+                    }
                 }
-
+            }.onSuccess { response ->
                 insertItemsIntoDb(response, requestCallback)
-            } catch (throwable: Throwable) {
+            }.onFailure { throwable ->
                 requestCallback.recordFailure(throwable)
             }
         }
-
     }
 
     private fun insertItemsIntoDb(
