@@ -9,12 +9,11 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.news.api.ArticlesBoundaryCallback
 import com.example.news.api.NewsService
+import com.example.news.db.NewsDatabase
 import com.example.news.db.dao.ArticlesDao
 import com.example.news.db.model.Article
 import com.example.news.db.model.NewsResponse
 import com.example.news.repository.network.NetworkState
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.util.concurrent.ExecutorService
@@ -25,53 +24,62 @@ import javax.inject.Singleton
 @Singleton
 class MainRepository @Inject constructor(
     private var newsService: NewsService,
+    private var database: NewsDatabase,
     private var articlesDao: ArticlesDao
 ) : NewsRepository {
 
     private val ioExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
     private fun insertResultIntoDb(body: NewsResponse?) {
-        GlobalScope.launch {
-            val totalNewArticles: List<Long>
-            body!!.articles.let { articles ->
-                totalNewArticles = articlesDao.insertMultipleArticles(articles)
+        var newArticlesCounter = 0
+        body!!.articles.let { articles ->
+            database.runInTransaction {
+                val start = articlesDao.getNextIndex()
+                val items = articles.mapIndexed { index, child ->
+                    child.indexInResponse = start + index
+                    child
+                }
+                // Count positive indexes
+                newArticlesCounter =
+                    runBlocking { articlesDao.multipleInsert(items).count { it > 0 } }
             }
-            Timber.d(
-                String.format(
-                    "DB insert status:${body.status}" +
-                            ":(total results:${body.totalResults}" +
-                            ":(new elements:${totalNewArticles.size}))"
-                )
-            )
         }
+        Timber.tag("InsertToDb").d(
+            String.format(
+                "DB insert status:${body.status}" +
+                        ":(retrieved ${body.articles.size} articles)" +
+                        ":(new elements:${newArticlesCounter}))"
+            )
+        )
     }
 
     @MainThread
     private suspend fun refresh(): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        try {
-            val response = newsService.getTopHeadlines().apply {
-                Timber.d("$totalResults")
-            }
-            ioExecutor.execute {
-                GlobalScope.launch {
+        ioExecutor.execute {
+            runBlocking {
+                try {
+                    val response =
+                        newsService.getTopHeadlines().apply {
+                            Timber.d("Got $totalResults results")
+                        }
 
-                    val totalNewArticles = articlesDao.insertMultipleArticles(response.articles)
+                    val newArticlesCounter: Int =
+                        articlesDao.multipleInsert(response.articles).count { it > 0 }
 
-                    Timber.d(
+                    Timber.tag("Refresh:InsertToDb").d(
                         String.format(
-                            "DB insert total results:${response.totalResults}" +
-                                    ":(new elements:${totalNewArticles.size}))"
+                            "DB insert ${response.articles.size} articles" +
+                                    ":(new ${newArticlesCounter}))"
                         )
                     )
+                } catch (throwable: Throwable) {
+                    networkState.postValue(NetworkState.error(throwable.message))
                 }
-
                 networkState.postValue(NetworkState.LOADED)
             }
 
-        } catch (throwable: Throwable) {
-            networkState.value = NetworkState.error(throwable.message)
         }
 
         return networkState
@@ -97,12 +105,9 @@ class MainRepository @Inject constructor(
             .setEnablePlaceholders(false)
             .build()
 
-        var articlesDataSource: DataSource.Factory<Int, Article>? = null
-        runBlocking {
-            articlesDataSource = articlesDao.getArticles()
-        }
+        val articlesDataSource: DataSource.Factory<Int, Article> = articlesDao.get()
 
-        val livePagedList = LivePagedListBuilder(articlesDataSource!!, config)
+        val livePagedList = LivePagedListBuilder(articlesDataSource, config)
             .setBoundaryCallback(boundaryCallback)
             .build()
 

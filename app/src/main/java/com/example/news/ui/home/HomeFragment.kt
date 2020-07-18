@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.news.adapters.ArticlesAdapter
 import com.example.news.databinding.FragmentHomeBinding
-import com.example.news.repository.network.Status
+import com.example.news.repository.network.NetworkState
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -52,12 +53,8 @@ class HomeFragment : Fragment() {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
-            viewModel.isLoading.set(it.status == Status.RUNNING)
-        })
-
         viewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            viewModel.isLoading.set(it.status == Status.RUNNING)
+            binding.swipeRefreshLayout.isRefreshing = it == NetworkState.LOADING
         })
     }
 

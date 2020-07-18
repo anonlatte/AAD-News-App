@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,9 +10,10 @@
             type="com.example.news.db.model.Article" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="@dimen/base_margin">
 
         <ImageView
@@ -21,20 +23,15 @@
             android:adjustViewBounds="true"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:imageFromUrl="@{article.urlToImage}"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="@dimen/base_margin"
             android:layout_marginLeft="@dimen/base_margin"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/articleImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/articleImage"
-            app:layout_constraintTop_toTopOf="@id/articleImage">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
@@ -43,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/article_gutter"
                 android:maxLines="2"
-                android:text="@{article.title}" />
+                android:text="@{article.title}"
+                tools:text="@tools:sample/lorem/random" />
 
             <TextView
                 android:id="@+id/contentPreview"
@@ -51,8 +49,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="@{article.content}" />
+                android:text="@{article.content}"
+                tools:text="@tools:sample/lorem/random" />
 
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

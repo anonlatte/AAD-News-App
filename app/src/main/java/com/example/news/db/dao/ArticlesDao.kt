@@ -8,21 +8,21 @@ import com.example.news.db.model.Article
 interface ArticlesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertArticle(article: Article): Long
+    suspend fun singleInsert(article: Article): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertMultipleArticles(article: List<Article>): List<Long>
+    suspend fun multipleInsert(article: List<Article>): List<Long>
 
-    @Query("SELECT * FROM articles ORDER BY published_at")
-    fun getArticles(): DataSource.Factory<Int, Article>
+    @Query("SELECT * FROM articles ORDER BY published_at DESC")
+    fun get(): DataSource.Factory<Int, Article>
 
     @Query("SELECT * FROM articles WHERE title=:title")
-    fun getArticlesByTitle(title: String): DataSource.Factory<Int, Article>
+    fun getByTitle(title: String): DataSource.Factory<Int, Article>
 
     @Query("SELECT MAX(indexInResponse) + 1 FROM articles")
-    fun getNextIndexInArticles(): Int
+    fun getNextIndex(): Int
 
     @Delete
-    suspend fun deleteArticle(article: Article): Int
+    suspend fun delete(article: Article): Int
 
 }
