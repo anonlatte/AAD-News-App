@@ -38,6 +38,7 @@ buildscript {
         swipeRefreshLayoutVersion = '1.1.0'
         testCoreVersion = '1.2.0'
         timberVersion = '4.7.1'
+        workVersion = "2.3.4"
     }
 
     repositories {
