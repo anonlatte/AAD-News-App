@@ -1,6 +1,7 @@
 package com.example.news.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagedListAdapter
@@ -44,8 +45,16 @@ class ArticlesAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article?) {
             binding.article = article
+            article?.run {
+                if (!description.isNullOrEmpty()) {
+                    binding.contentPreview.text = description
+                } else if (!content.isNullOrEmpty()) {
+                    binding.contentPreview.text = content
+                } else {
+                    binding.contentPreview.visibility = View.GONE
+                }
+            }
             binding.executePendingBindings()
         }
     }
-
 }
