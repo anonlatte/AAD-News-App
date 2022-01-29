@@ -1,10 +1,11 @@
-package com.example.news
+package com.example.news.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import com.example.news.R
 import com.example.news.util.TAG_NEWS_WORK
 import com.example.news.workers.NewsCheckWorker
 import dagger.android.AndroidInjection

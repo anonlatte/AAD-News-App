@@ -1,4 +1,4 @@
-package com.example.news.repository
+package com.example.news.data.repository
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
@@ -7,13 +7,13 @@ import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.news.api.ArticlesBoundaryCallback
-import com.example.news.api.NewsService
-import com.example.news.db.NewsDatabase
-import com.example.news.db.dao.ArticlesDao
-import com.example.news.db.model.Article
-import com.example.news.db.model.NewsResponse
-import com.example.news.repository.network.NetworkState
+import com.example.news.data.api.ArticlesBoundaryCallback
+import com.example.news.data.api.NewsService
+import com.example.news.data.db.NewsDatabase
+import com.example.news.data.db.dao.ArticlesDao
+import com.example.news.data.db.model.Article
+import com.example.news.data.db.model.NewsResponse
+import com.example.news.data.repository.network.NetworkState
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import java.util.concurrent.ExecutorService

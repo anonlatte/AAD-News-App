@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.news.adapters.ArticlesAdapter
+import com.example.news.data.repository.network.NetworkState
 import com.example.news.databinding.FragmentHomeBinding
-import com.example.news.repository.network.NetworkState
+import com.example.news.ui.home.adapter.ArticlesAdapter
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

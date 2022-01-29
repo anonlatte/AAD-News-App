@@ -1,8 +1,8 @@
-package com.example.news.db.dao
+package com.example.news.data.db.dao
 
 import androidx.paging.DataSource
 import androidx.room.*
-import com.example.news.db.model.Article
+import com.example.news.data.db.model.Article
 
 @Dao
 interface ArticlesDao {

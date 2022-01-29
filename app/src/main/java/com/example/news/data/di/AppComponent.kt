@@ -1,10 +1,10 @@
-package com.example.news.di
+package com.example.news.data.di
 
 import android.app.Application
 import com.example.news.NewsApp
-import com.example.news.di.module.AppModule
-import com.example.news.di.module.DatabaseModule
-import com.example.news.di.module.MainActivityModule
+import com.example.news.data.di.module.AppModule
+import com.example.news.data.di.module.DatabaseModule
+import com.example.news.data.di.module.MainActivityModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

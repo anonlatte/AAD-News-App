@@ -1,4 +1,4 @@
-package com.example.news.adapters
+package com.example.news.ui.home.adapter
 
 import android.graphics.drawable.Drawable
 import android.view.View

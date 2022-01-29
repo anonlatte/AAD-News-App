@@ -1,9 +1,9 @@
-package com.example.news.di.module
+package com.example.news.data.di.module
 
 import android.app.Application
 import androidx.room.Room
-import com.example.news.db.NewsDatabase
-import com.example.news.db.dao.ArticlesDao
+import com.example.news.data.db.NewsDatabase
+import com.example.news.data.db.dao.ArticlesDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

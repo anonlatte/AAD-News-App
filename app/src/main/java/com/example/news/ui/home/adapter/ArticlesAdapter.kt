@@ -1,4 +1,4 @@
-package com.example.news.adapters
+package com.example.news.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.R
+import com.example.news.data.db.model.Article
 import com.example.news.databinding.ListItemArticleBinding
-import com.example.news.db.model.Article
 
 class ArticlesAdapter :
     PagedListAdapter<Article, ArticlesAdapter.ViewHolder>(

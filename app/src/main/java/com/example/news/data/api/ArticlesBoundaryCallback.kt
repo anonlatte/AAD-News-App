@@ -1,9 +1,9 @@
-package com.example.news.api
+package com.example.news.data.api
 
 import androidx.paging.PagedList
-import com.example.news.db.model.Article
-import com.example.news.db.model.NewsResponse
-import com.example.news.repository.network.createStatusLiveData
+import com.example.news.data.db.model.Article
+import com.example.news.data.db.model.NewsResponse
+import com.example.news.data.repository.network.createStatusLiveData
 import com.example.news.util.PagingRequestHelper
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber

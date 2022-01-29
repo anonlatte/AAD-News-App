@@ -1,4 +1,4 @@
-package com.example.news.repository.network
+package com.example.news.data.repository.network
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

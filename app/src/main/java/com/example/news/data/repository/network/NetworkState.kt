@@ -1,4 +1,4 @@
-package com.example.news.repository.network
+package com.example.news.data.repository.network
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

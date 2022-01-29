@@ -1,7 +1,7 @@
-package com.example.news.api
+package com.example.news.data.api
 
 import com.example.news.BuildConfig
-import com.example.news.db.model.NewsResponse
+import com.example.news.data.db.model.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

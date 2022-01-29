@@ -1,9 +1,9 @@
 package com.example.news.ui.home
 
 import androidx.lifecycle.ViewModel
-import com.example.news.db.model.Article
-import com.example.news.repository.Listing
-import com.example.news.repository.MainRepository
+import com.example.news.data.db.model.Article
+import com.example.news.data.repository.Listing
+import com.example.news.data.repository.MainRepository
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(var repository: MainRepository) : ViewModel() {

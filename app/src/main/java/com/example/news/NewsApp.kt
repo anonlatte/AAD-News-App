@@ -1,7 +1,7 @@
 package com.example.news
 
 import android.app.Application
-import com.example.news.di.DaggerAppComponent
+import com.example.news.data.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import timber.log.Timber

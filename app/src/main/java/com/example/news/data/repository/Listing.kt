@@ -1,8 +1,8 @@
-package com.example.news.repository
+package com.example.news.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.example.news.repository.network.NetworkState
+import com.example.news.data.repository.network.NetworkState
 
 /**
  * Data class that is necessary for a UI to show a listing and interact w/ the rest of the system

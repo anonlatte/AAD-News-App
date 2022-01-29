@@ -1,7 +1,7 @@
-package com.example.news.di.module
+package com.example.news.data.di.module
 
 import com.example.news.BuildConfig
-import com.example.news.api.NewsService
+import com.example.news.data.api.NewsService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

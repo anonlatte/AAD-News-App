@@ -1,6 +1,6 @@
-package com.example.news.di.module
+package com.example.news.data.di.module
 
-import com.example.news.MainActivity
+import com.example.news.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

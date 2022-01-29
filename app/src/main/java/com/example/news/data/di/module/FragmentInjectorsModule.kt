@@ -1,4 +1,4 @@
-package com.example.news.di.module
+package com.example.news.data.di.module
 
 import com.example.news.ui.home.HomeFragment
 import dagger.Module
